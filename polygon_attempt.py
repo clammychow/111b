@@ -19,24 +19,24 @@ class Polygons():
         # ensemble algorithm separately extracts parameters to create morph
 
     def verts(self): # centered on (0, 0)
-        width = self.size
+        size = self.size
         elongation = self.elongation
         point = self.point
         skew = self.skew
-        x_A = -(width/2) * (-point + 1) + (width*point*skew)/2
-        y_A = (width*elongation)/2
+        x_A = -(size/2) * (-point + 1) + (skew*size*point)/2
+        y_A = (size*elongation)/2
         A = (x_A, y_A)
-        x_B = (width/2) * (-point + 1) + (width*point*skew)/2
-        y_B = (width*elongation)/2
+        x_B = (size/2) * (-point + 1) + (skew*size*point)/2
+        y_B = (size*elongation)/2
         B = (x_B, y_B)
-        x_C = width/2
-        y_C = -(width*elongation)/2
+        x_C = size/2
+        y_C = -(size*elongation)/2
         C = (x_C, y_C)
-        x_D = -width/2
-        y_D = -(width*elongation)/2
+        x_D = -size/2
+        y_D = -(size*elongation)/2
         D = (x_D, y_D)
-        # for additional depth parameter, can copy all of these and just multiply depth by width
-        # ex: E = (x_A, y_A, width*depth)
+        # for additional depth parameter, can copy all of these and just multiply depth by size
+        # ex: E = (x_A, y_A, size*depth)
         return [A, B, C, D]
     
     def plot(self, color, ax):
@@ -84,13 +84,13 @@ def extract_params(poly):
     A, B, C, D = poly.verts()
     size = C[0] - D[0]
     height = A[1] - C[1]
-    elongation = height / size
+    elongation = height/size
     top_width = B[0] - A[0]
-    point = 1 - (top_width / size)
+    point = -(top_width/size) + 1
     if point == 0:
         skew = 0
     else:
-        skew = (A[0] + (size/2)*(1 - point)) / (size * point / 2)
+        skew = (A[0] + (size/2)*(-point + 1)) / (size*point/2)
     return [size, elongation, point, skew]
 
 # Computes averages of parameters and returns a morph of lineup shapes
@@ -119,13 +119,13 @@ def ensemble_algorithm():
     axes[0].set_title("Source")
     axes[0].legend()
 
-    # Middle Plot: lineup
+    # Middle Plot: Lineup
     for i, poly in enumerate(test_lineup):
         poly.plot("blue", ax=axes[i+1])
         axes[i+1].set_title(f"Lineup Polygon {i+1}")
         axes[i+1].legend()
 
-    # Right Plot: morph
+    # Right Plot: Morph
     test_morph.plot("purple", ax=axes[7])
     axes[7].set_title("Ensemble Morph")
     axes[7].legend()
