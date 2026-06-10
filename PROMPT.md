@@ -12,16 +12,21 @@ At each timestep:
    - Risky agents have a 40% chance of gaining 8 food, 60% chance of losing 2 food.
    - Safe agents have a 50% chance of gaining 4 food, 50% chance of gaining 0 food.
    - Food is accumulated over time and cannot go below 0.
-2. After accumulated food is updated, all agents randomly choose a neighbor to observe.
+2. Every agent experiences a decay of 2 food.
+3. After accumulated food is updated, all agents randomly choose a neighbor to observe.
    - If the neighbor has more accumulated food than AND an opposite strategy from the agent, the probability that the agent copies the neighbor's strategy increases as the food difference between the agent and the neighbor increases. Use the softmax rule and account for zero division.
    - If the neighbor has equal/less food OR the same strategy, the probability that the agent copies the neighbor is 0.
 
 ## Engineering Goals
-1. One run_simulation.py script that includes an Agent class to track each agent's current accumulated food and strategy
-2. Any necessary functions to track and return the ratio of risky to safe agents over timesteps for plotting
-3. A function that demonstrates a full demo run and automatically saves all diagnostic figures to the specified directory
-4. A tolerance_sweep function that varies the starting ratio of risky to safe agents, averages the final ratio of risky to safe agents over multiple runs, and returns the results for plotting
-5. Configurable parameters to allow model verification and edge-case checks
+1. One `run_simulation.py` script that includes an Agent class to track each agent's current accumulated food and strategy
+2. Function(s) to track and return the ratio of risky to safe agents over time for plotting the average ratio trajectory over multiple runs. All runs should start with 50% risky, 50% safe.
+3. A `starting_ratio_sweep` function that varies the starting ratio of risky to safe agents, averages the final ratio of risky to safe agents over multiple runs, and returns the results for plotting
+4. Automatic saving of all diagnostic figures to the specified directory when I do a demo run; no GUI windows
+5. Configurable parameters to allow model verification and edge-case checks. Ensure the following checks can be straightforward to perform:
+- Fixing copy probability to 0
+- Fixing all agents' food amounts to a constant
+- Allowing all agents to start with the same strategy
+- Changing the expected values and variances of risky and safe payoffs
 
 ## Repository Layout
 ```
@@ -37,5 +42,17 @@ abm-project/
     results/
         ratio_trajectory.png
         final_ratio.png
-        tolerance_sweep.png
+        starting_ratio_sweep.png
 ```
+
+The entire demo should run and produce the figures under `results/` when I call `run_simulation.py`
+
+## Before Writing Any Code
+Create a PLAN.md and include:
+1. A brief description of the class hierarchy and how data flows from Agent through the abm into the plotting functions
+2. Proposed architecture for agent state variables, history tracking, and parameter sweep design
+3. Confirmation of the shapes returned by the simulation and parameter sweep
+4. A list of any edge cases and implementation ambiguities worth handling explicitly
+5. A description of how the required verification checks can be performed
+
+Do not write any code yet. Stop after drafting the plan and wait for confirmation.
