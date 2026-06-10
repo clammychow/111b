@@ -4,16 +4,16 @@ overview: "Design and implementation plan derived directly from [PROMPT.md](repo
 todos:
   - id: run-simulation
     content: "Implement run_simulation.py: Agent, ForagingABM, forage→decay→imitate, all public APIs"
-    status: pending
+    status: completed
   - id: plots-main
     content: Add save_diagnostic_figures (Agg) and main() producing results/*.png
-    status: pending
+    status: completed
   - id: tests
     content: Add tests/test_run_simulation.py with all verification checks
-    status: pending
+    status: completed
   - id: verify-e2e
     content: Run unittest + python run_simulation.py; confirm 3 figures and all tests pass
-    status: pending
+    status: completed
 isProject: false
 ---
 
@@ -78,6 +78,8 @@ results/*.png           SweepResult
 | `starting_ratio_sweep()` | Vary initial risky/safe ratio → mean ± std **final** ratio |
 | `save_diagnostic_figures()` | Headless PNG export |
 | `main()` | Demo: batch + sweep → `results/` |
+
+Running python run_simulation.py must product outputs automatically. Create `results/` if necessary.
 
 ---
 
@@ -235,7 +237,6 @@ abm-project/
 1. **Unit tests** (`unittest`, small `n_agents`, short `n_timesteps`)
 2. **Smoke test:** `python run_simulation.py` writes all three PNGs
 3. **Sanity:** 50/50 start + `copy_probability=0` → ratio stays 1.0
-4. **Docker** (when provided): mirror `bayes_factor` — discover tests then demo
 
 ---
 
